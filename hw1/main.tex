@@ -14,6 +14,8 @@
 \maketitle
 
 \begin{description}
+
+
 	\item[Problem 1] Let $A, B \in \mathbb{R}^{n\times n}$ and assuming both $A^{-1}$ $B^{-1}$ exist. Show that $(AB)^{-1} =
 		      B^{-1} A^{-1}$ .
 	      \begin{proof}
@@ -27,6 +29,7 @@
 		      \end{align*}
 	      \end{proof}
 
+
 	\item[Problem 2] Let $A \in \mathbb{R}^{n\times n}$. Show that if $Ax = 0,  \forall x \in \mathbb{R}^n$ , then $A = 0$.
 	      \begin{proof}
 		      Proof by contradiction. Suppose $A \ne 0$, then $A$ must have at least one \textbf{non-zero} column.
@@ -39,6 +42,7 @@
 
 		      Therefore, $A = 0$.
 	      \end{proof}
+
 
 	\item[Problem 3] Let $A \in \mathbb{R}^{n\times n}$. Show that if $A$ is strictly lower triangular(i.e. $a_{ij} = 0$ if $i \le j$), then $A^n=0$.
 	      \begin{proof}
@@ -81,17 +85,50 @@
 			      \item Therefore it's safe to conclude that $\forall n$, if $A$ is strictly lower triangular, $A^n = 0$
 		      \end{itemize}
 	      \end{proof}
+
+
 	\item[Problem 4] Let $A \in \mathbb{R}^{n\times n}, \textit{u}, \textit{v} \in \mathbb{R}^n$. Compute the inverse of $A = I + \textit{u}\textit{v}^T$.
 	      Hint:
 	      try a matrix $I - \alpha \textit{u} \textit{v}^T$ with $\alpha \in \mathbb{R}$ to be determined.
 	      What constraint must $\textit{u}$ and $\textit{v}$ satisfy for the inverse to exist?
 	      \begin{proof}
+		      Let's assume $\exists \alpha$ s.t. $I - \alpha \textit{u} \textit{v}^T$ is the inverse of $I + \textit{u}\textit{v}^T$.
+		      Then we have:
+		      \begin{align*}
+			      (I - \alpha \textit{u} \textit{v}^T)(I + \textit{u}\textit{v}^T)
+			       & = I + \textit{u}\textit{v}^T - \alpha \textit{u} \textit{v}^T - \alpha \textit{u} \textit{v}^T\textit{u}\textit{v}^T  &     \\
+			       & = I + \textit{u}\textit{v}^T - \alpha \textit{u} \textit{v}^T - \alpha \textit{u}(\textit{v}^T\textit{u})\textit{v}^T &     \\
+			       & = I + (1 - \alpha - \alpha(\textit{v}^T\textit{u}))\textit{u}\textit{v}^T                                             & = I
+		      \end{align*}
+		      Therefore given $1 + \textit{v}^T\textit{u} \ne 0$ we must have:
+		      $$
+			      1 - \alpha - \alpha(\textit{v}^T\textit{u})  = 0
+			      \Leftrightarrow \alpha                                       = \frac{1}{1 + \textit{v}^T\textit{u}}
+		      $$
+		      Finally, iff $1 + \textit{v}^T\textit{u} \ne 0$ we have:
+		      \begin{align*}
+			       &                 & I                                 & = (I - \frac{1}{1 + \textit{v}^T\textit{u}} \textit{u} \textit{v}^T)(I + \textit{u}\textit{v}^T) \\
+			       & \Leftrightarrow & (I + \textit{u}\textit{v}^T)^{-1} & = I - \frac{1}{1 + \textit{v}^T\textit{u}}
+		      \end{align*}
 
 	      \end{proof}
+
+
 	\item[Problem 5] \textbf{Using the results obtained in 1) and 4)} and assuming $A \in \mathbb{R}^{n\times n}, \textit{u}, \textit{v} \in \mathbb{R}^n$, and $A^{-1}$ exists. Show that:
 	      $$ (A+\textit{u}\textit{v}^T)^{-1} = A^{-1} - \frac{1}{1 + \textit{v}^TA^{-1}\textit{u}}A^{-1}\textit{u}\textit{v}^TA^{-1}$$
+	      Note: do not just use the answer and compute $(A+\textit{u}\textit{v}^T)^{-1}(A+\textit{u}\textit{v}^T)$ to show that
+	      this is equal to $I$. Write a derivation starting from
+	      $(A + \textit{u}\textit{v}^T)$ and use the results obtained above.
 	      \begin{proof}
-
+		      \begin{align*}
+			      (A + \textit{u}\textit{v}^T)^{-1}
+			       & = (A(I + A^{-1}\textit{u}\textit{v}^T))^{-1}                                             & \text{Take $A$ out}                   & \\
+			       & = (I + A^{-1}\textit{u}\textit{v}^T)^{-1}A^{-1}                                          & \text{Using \textbf{Problem 1}}       & \\
+			       & = (I + (A^{-1}\textit{u})\textit{v}^T)^{-1}A^{-1}                                        & \text{$A^{-1}\textit{u}$ as a vector} & \\
+			       & = (I - \frac{1}{1 + \textit{v}^T(A^{-1}\textit{u})}(A^{-1}\textit{u})\textit{v}^T)A^{-1} & \text{Using \textbf{Problem 4}}       & \\
+			       & = (I - \frac{1}{1 + \textit{v}^TA^{-1}\textit{u}}A^{-1}\textit{u}\textit{v}^T)A^{-1}     & \text{Remove parentheses}             & \\
+			       & = A^{-1} - \frac{1}{1 + \textit{v}^TA^{-1}\textit{u}}A^{-1}\textit{u}\textit{v}^TA^{-1}  & \text{Matrix multiplication}          &
+		      \end{align*}
 	      \end{proof}
 \end{description}
 
