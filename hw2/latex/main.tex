@@ -1,0 +1,104 @@
+\documentclass{article}
+
+\title{ECS 230 App Num Linear Algebra \\ Homework 2}
+\author{Yuyang(Peter) Rong \\917781535 \\ PtrRong@ucdavis.edu}
+
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage[colorlinks,linkcolor=red]{hyperref}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{subfloat}
+\newtheorem{prop}{Proposition}
+\usepackage{ulem}
+\usepackage{listings}
+
+
+% For SI numerical display.
+\usepackage{siunitx}
+\sisetup{detect-all}
+% For table \*rules
+\usepackage{booktabs}
+% To fix table places.
+\usepackage{float}
+\restylefloat{table}
+
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+
+\begin{document}
+\maketitle
+
+\begin{description}
+	\item[Problem 1] Error Analysis
+	      Consider the problem of solving $Ax = b$ for the unknown $x \in \mathbb{R}^2$ with
+	      \begin{equation}
+		      A = \begin{pmatrix} a & (a-1) \\ (a-1) & (a-2)\end{pmatrix}
+	      \end{equation}
+	      where $a \in \mathbb{R}$ and $a > 2$. Assuming that the relative error in $b$ is bounded by $\epsilon > 0$
+	      \begin{equation}
+		      \frac{\norm{\delta b}_\infty}{\norm{b}_\infty} < \epsilon
+	      \end{equation}
+	      compute a bound for the relative error:
+	      \begin{equation}
+		      \frac{\norm{\delta x}_\infty}{\norm{x}_\infty} < \epsilon
+	      \end{equation}
+
+	      \begin{proof}
+		      Since $a > 2$, It's safe to conclude that:
+		      $$
+			      A^{-1} = \begin{pmatrix} -(a-2) & (a-1) \\ (a-1) & -a\end{pmatrix}
+		      $$
+	      \end{proof}
+
+	\item[Problem 2] Using timing functions
+
+	      a) Study and understand the program \lstinline{timing1.c}.
+	      Compile the program on CSIF using gcc -o timing1 timing1.c -lm.
+	      Run the program 10 times with a command line argument of 5000000. Report the timings observed in the output. Repeat the process with arguments 10000000 and 20000000.
+	      Discuss the results observed, in particular regarding the resolution of the timing procedure used and the reproducibility of the results between runs. From the observed results,
+	      estimate the time needed to compute a square root.
+
+	      \textbf{a)}
+	      Estimated time to compute a square root:
+
+	      \begin{table}[H]
+		      \centering
+		      \begin{tabular}{SSSS}
+			      \toprule
+			      \multicolumn{1}{l}{Argument} & {Wall time} & {CPU Time} & {CPU cycles} \\
+			      \midrule
+			      5000000                      &             &            &              \\
+			      10000000                     &             &            &              \\
+			      20000000                     &             &            &              \\
+			      \bottomrule
+		      \end{tabular}
+		      \caption{10 time running results for problem a)}
+	      \end{table}
+
+
+	      b) Study and understand the program \lstinline{timing2.c}.
+	      Compile the program on CSIF using gcc as was done in a). Run the program 10 times
+	      with the same arguments as in case a). Discuss the results obtained. Find the clock rate
+	      of the processor by looking at the file /proc/cpuinfo. Using your timing information,
+	      compute the number of clock cycles needed to compute a square root and the corresponding time. Compare with the results obtained in a).
+
+	      \textbf{b)}
+	      Estimated time to compute a square root:
+
+	      \begin{table}[H]
+		      \centering
+		      \begin{tabular}{SSSS}
+			      \toprule
+			      \multicolumn{1}{l}{Argument} & {Wall time} & {CPU Time} & {CPU cycles} \\
+			      \midrule
+			      5000000                      &             &            &              \\
+			      10000000                     &             &            &              \\
+			      20000000                     &             &            &              \\
+			      \bottomrule
+		      \end{tabular}
+		      \caption{10 time running results for problem b)}
+	      \end{table}
+
+\end{description}
+
+\end{document}
+\grid
