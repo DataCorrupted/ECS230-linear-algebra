@@ -6,5 +6,5 @@ timing1: src/timing1.c
 timing2: src/timing2.c
 	gcc -o bin/timing2 $< -lm
 
-test: timing1 timing2
+test: all
 	./script/test.sh

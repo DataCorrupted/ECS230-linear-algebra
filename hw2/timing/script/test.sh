@@ -1,4 +1,4 @@
-#!/usr/bin/sh
+#!/bin/bash
 
 for bin in timing1 timing2
 do
