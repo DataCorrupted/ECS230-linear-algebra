@@ -47,6 +47,15 @@
 		      $$
 			      A^{-1} = \begin{pmatrix} -(a-2) & (a-1) \\ (a-1) & -a\end{pmatrix}
 		      $$
+
+		      Now we have:
+
+		      \begin{align*}
+			      \frac{\norm{\delta x}_\infty}{\norm{x}_\infty}
+			       & \le  \norm{A}_\infty\norm{A^{-1}}_\infty\frac{\norm{\delta b}_\infty}{\norm{b}_\infty} \\
+			       & =    (2a - 1) (2a - 1)  \frac{\norm{\delta b}_\infty}{\norm{b}_\infty}                 \\
+			       & <    (2a - 1)^2\epsilon
+		      \end{align*}
 	      \end{proof}
 
 	\item[Problem 2] Using timing functions
