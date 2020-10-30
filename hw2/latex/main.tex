@@ -58,44 +58,189 @@
 	      estimate the time needed to compute a square root.
 
 	      \textbf{a)}
-	      Estimated time to compute a square root:
+	      Estimated time to compute a square root: \SI{1.1307e-5}{\milli\second}.
+
+	      \textbf{Time resolution}. It seems that every \SI{1000} CPU clock corresponds to \SI{1}{\milli\second}, thus the resolution is \SI{1e-6}{\second}.
+	      However, it seems that the system clock(real time) can be as accurate as \SI{1e-9}{\second}.
 
 	      \begin{table}[H]
 		      \centering
 		      \begin{tabular}{SSSS}
 			      \toprule
-			      \multicolumn{1}{l}{Argument} & {Wall time} & {CPU Time} & {CPU cycles} \\
+			      \multicolumn{1}{l}{Argument} & \multicolumn{1}{l}{CPU clocks} & \multicolumn{1}{l}{CPU Time(\si{\milli\second})} & \multicolumn{1}{l}{Real time(\si{\milli\second})} \\
 			      \midrule
-			      5000000                      &             &            &              \\
-			      10000000                     &             &            &              \\
-			      20000000                     &             &            &              \\
+			      5000000                      & 68686                          & 68.685600                                        & 68.723893                                         \\
+			      10000000                     & 130364                         & 130.363700                                       & 130.404711                                        \\
+			      20000000                     & 226061                         & 226.061100                                       & 226.132584                                        \\
 			      \bottomrule
 		      \end{tabular}
-		      \caption{10 time running results for problem a)}
+		      \caption{Average result running \lstinline{timing1.c} for 10 times}
 	      \end{table}
 
+	      \begin{table}[H]
+		      \centering
+		      \begin{tabular}{SSSS}
+			      \toprule
+			      \multicolumn{1}{l}{\# of trial} & \multicolumn{1}{l}{CPU clocks} & \multicolumn{1}{l}{CPU Time(\si{\milli\second})} & \multicolumn{1}{l}{Real time(\si{\milli\second})} \\
+			      \midrule
+			      1                               & 68781                          & 68.781000                                        & 68.805933                                         \\
+			      2                               & 69927                          & 69.927000                                        & 69.965839                                         \\
+			      3                               & 62631                          & 62.631000                                        & 62.659979                                         \\
+			      4                               & 68975                          & 68.975000                                        & 69.011927                                         \\
+			      5                               & 69671                          & 69.671000                                        & 69.707155                                         \\
+			      6                               & 70952                          & 70.952000                                        & 70.997953                                         \\
+			      7                               & 70918                          & 70.918000                                        & 70.947170                                         \\
+			      8                               & 70087                          & 70.087000                                        & 70.144892                                         \\
+			      9                               & 65152                          & 65.152000                                        & 65.175056                                         \\
+			      10                              & 69762                          & 69.762000                                        & 69.823027                                         \\
+			      \midrule
+			      {Average}                       & 68686                          & 68.685600                                        & 68.723893                                         \\
+			      \bottomrule
+		      \end{tabular}
+		      \caption{Running \lstinline{./timing1 5000000} for 10 times}
+	      \end{table}
+	      \begin{table}[H]
+		      \centering
+		      \begin{tabular}{SSSS}
+			      \toprule
+			      \multicolumn{1}{l}{\# of trial} & \multicolumn{1}{l}{CPU clocks} & \multicolumn{1}{l}{CPU Time(\si{\milli\second})} & \multicolumn{1}{l}{Real time(\si{\milli\second})} \\
+			      \midrule
+			      1                               & 132927                         & 132.927000                                       & 132.972956                                        \\
+			      2                               & 126200                         & 126.200000                                       & 126.235962                                        \\
+			      3                               & 131049                         & 131.049000                                       & 131.091118                                        \\
+			      4                               & 132542                         & 132.542000                                       & 132.594109                                        \\
+			      5                               & 124012                         & 124.012000                                       & 124.038935                                        \\
+			      6                               & 131062                         & 131.062000                                       & 131.101131                                        \\
+			      7                               & 130514                         & 130.514000                                       & 130.554914                                        \\
+			      8                               & 130582                         & 130.582000                                       & 130.625963                                        \\
+			      9                               & 131719                         & 131.719000                                       & 131.763935                                        \\
+			      10                              & 133030                         & 133.030000                                       & 133.068085                                        \\
+			      \midrule
+			      {Average}                       & 130364                         & 130.363700                                       & 130.404711                                        \\
+			      \bottomrule
+		      \end{tabular}
+		      \caption{Running \lstinline{./timing1 10000000} for 10 times}
+	      \end{table}
+	      \begin{table}[H]
+		      \centering
+		      \begin{tabular}{SSSS}
+			      \toprule
+			      \multicolumn{1}{l}{\# of trial} & \multicolumn{1}{l}{CPU clocks} & \multicolumn{1}{l}{CPU Time(\si{\milli\second})} & \multicolumn{1}{l}{Real time(\si{\milli\second})} \\
+			      \midrule
+			      1                               & 222294                         & 222.294000                                       & 222.383976                                        \\
+			      2                               & 235164                         & 235.164000                                       & 235.217810                                        \\
+			      3                               & 238101                         & 238.101000                                       & 238.166094                                        \\
+			      4                               & 231034                         & 231.034000                                       & 231.116056                                        \\
+			      5                               & 229133                         & 229.133000                                       & 229.199886                                        \\
+			      6                               & 232556                         & 232.556000                                       & 232.615948                                        \\
+			      7                               & 234992                         & 234.992000                                       & 235.085011                                        \\
+			      8                               & 184748                         & 184.748000                                       & 184.801102                                        \\
+			      9                               & 225517                         & 225.517000                                       & 225.574017                                        \\
+			      10                              & 227072                         & 227.072000                                       & 227.165937                                        \\
+			      \midrule
+			      {Average}                       & 226061                         & 226.061100                                       & 226.132584                                        \\
+			      \bottomrule
+		      \end{tabular}
+		      \caption{Running \lstinline{./timing1 20000000} for 10 times}
+	      \end{table}
 
 	      b) Study and understand the program \lstinline{timing2.c}.
 	      Compile the program on CSIF using gcc as was done in a). Run the program 10 times
 	      with the same arguments as in case a). Discuss the results obtained. Find the clock rate
-	      of the processor by looking at the file /proc/cpuinfo. Using your timing information,
+	      of the processor by looking at the file \lstinline{/proc/cpuinfo}. Using your timing information,
 	      compute the number of clock cycles needed to compute a square root and the corresponding time. Compare with the results obtained in a).
 
 	      \textbf{b)}
-	      Estimated time to compute a square root:
+	      Estimated clock cycles to compute a square root: 22.75
+
+	      \lstinline{/proc/cpuinfo} shows we have ``Intel(R) Xeon(R) Silver 4116 CPU @ 2.10GHz'', which at full speed runs \SI{2.1e9}{\hertz}
+	      Thus we should have
+
+	      $$ \frac{22.75}{2.1 \times 10^9 Hz} \approx  1.1 \times 10^{-8} s$$
+
+	      This aligns with our calculation in a) where in real world we took approximatly \SI{1.1307e-8}{\second}
 
 	      \begin{table}[H]
 		      \centering
-		      \begin{tabular}{SSSS}
+		      \begin{tabular}{SS}
 			      \toprule
-			      \multicolumn{1}{l}{Argument} & {Wall time} & {CPU Time} & {CPU cycles} \\
+			      \multicolumn{1}{l}{Argument} & \multicolumn{1}{l}{CPU clocks} \\
 			      \midrule
-			      5000000                      &             &            &              \\
-			      10000000                     &             &            &              \\
-			      20000000                     &             &            &              \\
+			      5000000                      & 134107395                      \\
+			      10000000                     & 277783552                      \\
+			      20000000                     & 455098398                      \\
 			      \bottomrule
 		      \end{tabular}
-		      \caption{10 time running results for problem b)}
+		      \caption{Average result running \lstinline{timing2.c} for 10 times}
+	      \end{table}
+
+	      \begin{table}[H]
+		      \centering
+		      \begin{tabular}{SS}
+			      \toprule
+			      \multicolumn{1}{l}{\# of trial} & \multicolumn{1}{l}{CPU clocks} \\
+			      \midrule
+			      1                               & 119277334                      \\
+			      2                               & 145725038                      \\
+			      3                               & 147008982                      \\
+			      4                               & 117471312                      \\
+			      5                               & 113806628                      \\
+			      6                               & 114704730                      \\
+			      7                               & 146020756                      \\
+			      8                               & 145730270                      \\
+			      9                               & 144607340                      \\
+			      10                              & 146721560                      \\
+			      \midrule
+			      {Average}                       & 134107395                      \\
+			      \bottomrule
+		      \end{tabular}
+		      \caption{Running \lstinline{./timing2 5000000} for 10 times}
+	      \end{table}
+
+	      \begin{table}[H]
+		      \centering
+		      \begin{tabular}{SS}
+			      \toprule
+			      \multicolumn{1}{l}{\# of trial} & \multicolumn{1}{l}{CPU clocks} \\
+			      \midrule
+			      1                               & 282398664                      \\
+			      2                               & 275102860                      \\
+			      3                               & 278826086                      \\
+			      4                               & 275859470                      \\
+			      5                               & 279529324                      \\
+			      6                               & 272287924                      \\
+			      7                               & 278289338                      \\
+			      8                               & 280035948                      \\
+			      9                               & 280269610                      \\
+			      10                              & 275236292                      \\
+
+			      \midrule
+			      {Average}                       & 277783552                      \\
+			      \bottomrule
+		      \end{tabular}
+		      \caption{Running \lstinline{./timing2 10000000} for 10 times}
+	      \end{table}
+	      \begin{table}[H]
+		      \centering
+		      \begin{tabular}{SS}
+			      \toprule
+			      \multicolumn{1}{l}{\# of trial} & \multicolumn{1}{l}{CPU clocks} \\
+			      \midrule
+			      1                               & 480711782                      \\
+			      2                               & 462539798                      \\
+			      3                               & 389832118                      \\
+			      4                               & 386795328                      \\
+			      5                               & 447369508                      \\
+			      6                               & 494030660                      \\
+			      7                               & 462133578                      \\
+			      8                               & 497713962                      \\
+			      9                               & 458008078                      \\
+			      10                              & 471849168                      \\
+			      \midrule
+			      {Average}                       & 455098398                      \\
+			      \bottomrule
+		      \end{tabular}
+		      \caption{Running \lstinline{./timing2 20000000} for 10 times}
 	      \end{table}
 
 \end{description}
