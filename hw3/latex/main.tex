@@ -1,0 +1,249 @@
+\documentclass[12pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{mdframed}
+\usepackage{booktabs}
+
+% For math
+\usepackage{amsmath, amsthm, amssymb}
+
+% For coding
+\usepackage{listings}
+
+% For SI numerical display.
+\usepackage{siunitx}
+\sisetup{detect-all}
+
+% For table \*rules
+\usepackage{booktabs}
+
+% To fix table places.
+\usepackage{float}
+
+\restylefloat{table}
+
+\title{ECS 230 App Num Linear Algebra \\ Homework 2}
+\author{Yuyang(Peter) Rong \\917781535 \\ PtrRong@ucdavis.edu}
+
+\begin{document}
+
+\maketitle
+
+\begin{enumerate}
+  \item \textbf{Simple Matrix Multiplication}
+        Write a program that implements matrix multiplication $C=AB$ where $A$, $B$ and $C$ are $\mathbb{R}^{(n \times n)}$ real matrices represented as double-precision numbers.
+
+        \textbf{Input Requirements}
+        \begin{itemize}
+          \item The value of $n$ must be read as a command line argument by the program.
+          \item The program must use dynamic memory allocation for all matrices.
+          \item The program must initialize the matrices $A$ and $B$ with non-zero arbitrary values of your choice before starting the calculation of the product.
+        \end{itemize}
+
+        \textbf{Return Requirements}
+        \begin{itemize}
+          \item Determine the total number of floating-point operations performed in the product.
+          \item Use the  \lstinline$readTSC$ function(provided in Homework2) to measure the time taken to compute the product.
+          \item Use repeated runs to ensure that timings are accurate.
+        \end{itemize}
+
+        \textbf{Print Requirements}
+        The program must print the following information on output on two separate lines:
+        \begin{itemize}
+          \item the number of CPU clock cycles used (printed as an integer)
+          \item the floating-point performance in GFlop/s, printed as a floating-point number.
+        \end{itemize}
+
+        \textbf{Solutions}
+
+        a) Provide results for the following values of n: \SI{100}, \SI{200}, \SI{500}, \SI{1000}, \SI{2000}.
+
+        \textbf{Running the Program}
+
+        \begin{mdframed}
+          % TODO
+          Compilation: \lstinline$gcc -o output filename.c -flags$
+
+          Running: \lstinline$./output n$
+
+        \end{mdframed}
+
+
+        \textbf{Formulas}
+
+        \begin{mdframed}
+          % Total number of floating point operation
+          $$\text{num\_flops} = $$
+
+          % Time taken to compute the product
+          $$\text{total\_time} = $$
+
+          % CPU Cycles Used
+          $$\text{total\_cycles} = $$
+
+          % Floating point performance GFlops/s
+          $$\text{performance} = $$
+        \end{mdframed}
+
+        \begin{table}
+          \centering
+          \begin{tabular}{SSS}
+            \toprule
+            \multicolumn{1}{l}{Matrix Dimension (n)} &
+            \multicolumn{1}{l}{Clock Cycles}         &
+            \multicolumn{1}{l}{Gflops/s}                   \\
+            \midrule
+            100                                      &   & \\
+            200                                      &   & \\
+            500                                      &   & \\
+            1000                                     &   & \\
+            2000                                     &   & \\
+            \bottomrule
+          \end{tabular}
+          \caption{Results of running program in subsection a}
+        \end{table}
+
+
+        \begin{figure}
+          \centering
+          \fbox{\rule[-.5cm]{0cm}{4cm} \rule[-.5cm]{4cm}{0cm}}
+          \caption{Replace fbox with your graph. x axis = n = [100, 200, 500, 1000, 2000] yaxis = performance metrics}
+        \end{figure}
+
+
+        b) Comment on your results and compare with the expected floating-point performance of the processor (Intel Core i7-4790K, 4.0GHz or 3.6 GHz depending on the CSIF PC you are using. Note: determine the peak performance of one core of the processor considering the width of SIMD registers, clock frequency, hyper-threading, and the fused multiply-add FMA instruction).\textbf{ Compute the fraction of the nominal peak performance of a core achieved in your runs.}  Consider the fact that the “turbo boost” feature of Intel processors may change the frequency.
+
+        \textbf{Formula}
+
+        \begin{mdframed}
+          $$\text{nominal\_peak\_performance} = $$
+        \end{mdframed}
+
+        \textbf{Analysis}
+
+        \begin{mdframed}
+          \vspace{1in}
+        \end{mdframed}
+
+
+  \item \textbf{Matrix Multiplication Loops}
+        Write a modified version of the above program implementing all 6 possible loop orderings in a matrix multiplication.
+        Run the program and compare the performance for each loop ordering. Discuss and explain your results.  Compare results obtained when compiling with \lstinline$gcc$ without options, and with the \lstinline$-O0$,\lstinline$-O2$ and \lstinline$-O3$ optimization options.
+
+        \textbf{Solutions}
+
+        \textbf{Running the Program}
+
+        \begin{mdframed}
+          % TODO
+          Compilation: \lstinline{gcc -o output filename.c -flags}
+
+          Running: \lstinline{./output n}
+
+        \end{mdframed}
+
+        \textbf{Algorithms}
+
+        \begin{lstlisting}[language=C]
+#include <stdio.h>
+// Sample Loop
+int main()
+{
+    printf("Hello world!");
+    return 0;
+}
+\end{lstlisting}
+
+
+        \begin{table}
+          \centering
+          \begin{tabular}{lSSS}
+            \toprule
+            \multicolumn{1}{l}{Loop Order} &
+            \multicolumn{1}{l}{-O0}        &
+            \multicolumn{1}{l}{-O2}        &
+            \multicolumn{1}{l}{-O3}                 \\
+            \midrule
+            ijk                            &   &  & \\
+            ikj                            &   &  & \\
+            jik                            &   &  & \\
+            jki                            &   &  & \\
+            kij                            &   &  & \\
+            kji                            &   &  & \\
+            \bottomrule
+          \end{tabular}
+          \caption{Results of running different loops}
+        \end{table}
+
+
+        \begin{figure}
+          \centering
+          \fbox{\rule[-.5cm]{0cm}{4cm} \rule[-.5cm]{4cm}{0cm}}
+          \caption{Replace fbox with your graph. x axis = n = [100, 200, 500, 1000, 2000] yaxis = performance of different loops}
+        \end{figure}
+
+  \item \textbf{BLAS Matrix Multiplication}
+        Write a program implementing matrix multiplication using the  \lstinline$dgemm$ function of the BLAS library(http://www.netlib.org/blas). The library is installed on CSIF computers.  Use the command  \lstinline$man dgemm$ on CSIF to get details about the arguments of the function. Note that  \lstinline$dgemm$ is a FORTRAN function and all parameters from a C program should be passed through pointers. Use the \textit{dotblas.c} example program (provided on Canvas) as an example of how to call BLAS functions. Use the additional \lstinline$-lblas$ argument during compilation.
+
+        \textbf{Measure timings for the above problem sizes and discuss your results.}
+
+        Note: all programs in this homework assignment use only one core of the processor. However, the BLAS library is multithreaded.
+        Use the command \lstinline$export OMP_NUM_THREADS=1$ before running your program to make sure that you measure the performance of one core only
+
+        \textbf{Solutions}
+
+
+        \textbf{Results of running different loops}
+
+        \begin{table}
+          \centering
+          \begin{tabular}{SSS}
+            \toprule
+            \multicolumn{1}{l}{\lstinline{dgemm} dimension} &
+            \multicolumn{1}{l}{Clock cycle}                 &
+            \multicolumn{1}{l}{Total seconds}                     \\
+            \midrule
+            100                                             &   & \\
+            200                                             &   & \\
+            500                                             &   & \\
+            1000                                            &   & \\
+            2000                                            &   & \\
+            \bottomrule
+          \end{tabular}
+          \caption{Some caption}
+
+        \end{table}
+
+
+
+        \begin{figure}
+          \centering
+          \fbox{\rule[-.5cm]{0cm}{4cm} \rule[-.5cm]{4cm}{0cm}}
+          \caption{Replace fbox with your graph.  X axis is for different dimension and Y for clock cycle}
+        \end{figure}
+
+
+        \textbf{Running the Program}
+
+        \begin{mdframed}
+          % TODO
+          Compilation: \lstinline$gcc -o output filename.c -flags$
+
+          Running: \lstinline$./output n$
+
+        \end{mdframed}
+
+        \textbf{Formula}
+
+        \begin{mdframed}
+          $$\text{total\_seconds} = $$
+        \end{mdframed}
+
+        \textbf{Discussing the Results}
+
+        \begin{mdframed}
+          \vspace{3em}
+
+        \end{mdframed}
+\end{enumerate}
+
+\end{document}
