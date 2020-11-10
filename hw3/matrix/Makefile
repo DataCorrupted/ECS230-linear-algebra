@@ -9,7 +9,7 @@ mul: $(SRC)/mul.c
 	gcc $^ -o $(TARGET)/$@
 
 mul_loop_%: $(SRC)/mul_loop.c
-	gcc $^ -$* -o $(TARGET)/$@
+	gcc $^ -$* -DOPT_LEVEL=\"-$*\" -o $(TARGET)/$@
 
 mul_BLAS: $(SRC)/mul_BLAS.c
 	gcc $^ -o $(TARGET)/$@ -lblas
