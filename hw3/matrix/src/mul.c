@@ -24,7 +24,12 @@ int main(int argc, char** argv) {
   usize begin = readTSC();
   I J K { MATRIX_MUL(a, b, c); }
   usize end = readTSC();
-  printf("Clocks passed: %ld\n", end - begin);
+  usize clocks = end - begin;
+  // Intel(R) Xeon(R) Silver 4116 CPU @ 2.10GHz
+  double gflops = (2 * n * n * n * 1e-9) / (clocks * 1e-6 / 2101);
+  printf("Clocks passed: %ld\n", clocks);
+  printf("Gflops: %lf\n", gflops);
+
   // matrix_display(a);
   matrix_drop(a);
 
