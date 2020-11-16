@@ -20,13 +20,17 @@ int main(int argc, char** argv) {
   matrix_rand(c);
   // matrix_display(c);
 
-  Matrix a = matrix_new(n);
-  usize begin = readTSC();
+  Matrix a;
+  usize begin, end, clocks;
+  double gflops;
+
+  a = matrix_new(n);
+  begin = readTSC();
   I J K { MATRIX_MUL(a, b, c); }
-  usize end = readTSC();
-  usize clocks = end - begin;
+  end = readTSC();
+  clocks = end - begin;
   // Intel(R) Xeon(R) Silver 4116 CPU @ 2.10GHz
-  double gflops = (2 * n * n * n * 1e-9) / (clocks * 1e-6 / 2101);
+  gflops = (2 * n * n * n * 1e-9) / (clocks * 1e-6 / 2101);
   printf("Clocks passed: %ld\n", clocks);
   printf("Gflops: %lf\n", gflops);
 
