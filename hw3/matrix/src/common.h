@@ -23,11 +23,11 @@ Matrix matrix_new(const usize n) {
 
 #define MATRIX_GET(m, i, j) (m.ptr + i * m.n + j)
 #define MATRIX_MUL(a, b, c) \
-  *MATRIX_GET(a, i, j) = *MATRIX_GET(b, i, k) * *MATRIX_GET(c, k, j)
+  *MATRIX_GET(a, i, j) += *MATRIX_GET(b, i, k) * *MATRIX_GET(c, k, j)
 
 void matrix_rand(Matrix matrix) {
   usize n = matrix.n;
-  I J { *MATRIX_GET(matrix, i, j) = (Real)rand() / RAND_MAX * 2.0 - 1.0; }
+  I J { *MATRIX_GET(matrix, i, j) = (Real)rand() / RAND_MAX; }
 }
 
 void matrix_display(const Matrix matrix) {

@@ -5,5 +5,7 @@ run_mul_loop () {
         ./target/mul_loop_$1 1000 >/dev/null
     done
 }
+
+run_mul_loop O0
 run_mul_loop O2
 run_mul_loop O3
