@@ -1,5 +1,8 @@
 for i in 100 200 500 1000 2000
 do
-    echo "Running \`mul $i\`"
-    ./target/mul $i
+    for j in 1 2 3
+    do
+        echo "Running \`mul $i\` for the $j-th time"
+        ./target/mul $i >/dev/null
+    done
 done
