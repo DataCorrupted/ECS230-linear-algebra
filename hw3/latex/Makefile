@@ -17,3 +17,4 @@ clean :
 main : $(main).tex
 	$(eval basename = $(patsubst %.tex,%,$<))
 	lualatex $(basename)
+	lualatex $(basename)
