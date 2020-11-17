@@ -2,24 +2,24 @@
 #include "stdlib.h"
 #include "time.h"
 
+typedef size_t usize;
+typedef double Real;
 #define INFO(format, ...) fprintf(stderr, format, __VA_ARGS__);
+#define I for (usize i = 0; i < n; i++)
+#define J for (usize j = 0; j < n; j++)
+#define K for (usize k = 0; k < n; k++)
 
 /* Intel(R) Xeon(R) Silver 4116 CPU @ 2.10GHz */
-#define CPU_MAX_MHZ 2101
+/* Intel(R) Core(TM) i7-4790 CPU @ 3.60GHz */
+#define CPU_MAX_MHZ 3600
 #define GET_GFLOPS            \
   usize clocks = end - begin; \
   long double gflops = 2 * n * n * n * 1e-3 * CPU_MAX_MHZ / clocks;
-typedef size_t usize;
-typedef double Real;
 
 typedef struct {
   Real* ptr;
   usize n;
 } Matrix;
-
-#define I for (usize i = 0; i < n; i++)
-#define J for (usize j = 0; j < n; j++)
-#define K for (usize k = 0; k < n; k++)
 
 Matrix matrix_new(const usize n) {
   Matrix matrix;
