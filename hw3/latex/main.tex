@@ -71,8 +71,8 @@ You may find the whole file in the attachment \autoref{sec:makefile}.
 Here is the part corresponding to this problem.
 \begin{lstlisting}
 mul: $(SRC)/mul.c
-  gcc $^ -o $(TARGET)/$@
-        \end{lstlisting}
+	${CC} $^ -o $(TARGET)/$@
+\end{lstlisting}
 
 Shell script:
 \begin{lstlisting}
@@ -192,7 +192,7 @@ You may find the whole file in the attachment \autoref{sec:makefile}.
 Here is the part corresponding to this problem.
 \begin{lstlisting}
 mul_loop_%: $(SRC)/mul_loop.c
-  gcc $^ -$* -DOPT_LEVEL=\"-$*\" -o $(TARGET)/$@
+	${CC} $^ -$* -DOPT_LEVEL=\"-$*\" -o $(TARGET)/$@
 \end{lstlisting}
 
 Shell script:
@@ -377,91 +377,119 @@ So we didn't do experiment on binary compiled with no optimization level.
 
 \section{BLAS Matrix Multiplication}
 Write a program implementing matrix multiplication using the  \lstinline$dgemm$ function of the BLAS library(http://www.netlib.org/blas). The library is installed on CSIF computers.  Use the command  \lstinline$man dgemm$ on CSIF to get details about the arguments of the function. Note that  \lstinline$dgemm$ is a FORTRAN function and all parameters from a C program should be passed through pointers. Use the \textit{dotblas.c} example program (provided on Canvas) as an example of how to call BLAS functions. Use the additional \lstinline$-lblas$ argument during compilation.
-
-\textbf{Measure timings for the above problem sizes and discuss your results.}
-
+Measure timings for the above problem sizes and discuss your results.
 Note: all programs in this homework assignment use only one core of the processor. However, the BLAS library is multithreaded.
 Use the command \lstinline$export OMP_NUM_THREADS=1$ before running your program to make sure that you measure the performance of one core only
 
-\textbf{Solutions}
+\subsection{Results}
+\subsubsection{Running the program}
 
+For simplicity we used \texttt{Makefile} to make all our projects.
+You may find the whole file in the attachment \autoref{sec:makefile}.
+Here is the part corresponding to this problem.
+\begin{lstlisting}
+mul_BLAS: $(SRC)/mul_BLAS.c
+	${CC} $^ -o $(TARGET)/$@ -lblas
+\end{lstlisting}
 
-\textbf{Results of running different loops}
+Shell script:
+\begin{lstlisting}
+for i in 100 200 500 1000 2000
+do
+    for j in 1 2 3
+    do
+        echo "Running \`mul_BLAS $i\` for the $j-th time"
+        OMP_NUM_THREADS=1 ./target/mul_BLAS $i >/dev/null
+    done
+done
+\end{lstlisting}
 
-\begin{table}
+\subsubsection{Formulas}
+\begin{equation}
+  \begin{aligned}
+    \text{total\_seconds} & = \frac{\text{clocks}}{\text{frequency}} \\
+                          & = \frac{\text{clocks}}{\SI{3600}{\MHz}}
+  \end{aligned}
+\end{equation}
+\begin{table}[H]
   \centering
-  \begin{tabular}{SSS}
+  \begin{tabular}{lrrrrrr}
     \toprule
-    \multicolumn{1}{l}{\lstinline{dgemm} dimension} &
-    \multicolumn{1}{l}{Clock cycle}                 &
-    \multicolumn{1}{l}{Total seconds}                     \\
+    \multicolumn{1}{l}{n}          &
+    \multicolumn{1}{l}{Trial 1}    &
+    \multicolumn{1}{l}{Trial 2}    &
+    \multicolumn{1}{l}{Trial 3}    &
+    \multicolumn{1}{l}{Avg clocks} &
+    \multicolumn{1}{l}{Avg gflops} &
+    \multicolumn{1}{l}{Avg total time(\si{\milli\second})}                                                  \\
     \midrule
-    100                                             &   & \\
-    200                                             &   & \\
-    500                                             &   & \\
-    1000                                            &   & \\
-    2000                                            &   & \\
+    100                            & 1287280   & 1274204   & 1320212   & 1293899   & 5.564578  & 0.359416   \\
+    200                            & 4759952   & 5418550   & 5847752   & 5342085   & 10.782308 & 1.483912   \\
+    500                            & 24595832  & 24690910  & 23160552  & 24149098  & 37.268473 & 6.708083   \\
+    1000                           & 168639670 & 169474880 & 167611566 & 168575372 & 42.710865 & 46.826492  \\
+    2000                           & 930683042 & 926964072 & 945087802 & 934244972 & 61.654065 & 259.512492 \\
     \bottomrule
   \end{tabular}
-  \caption{Some caption}
-
+  \caption{Result of matrix multiplication using \lstinline{dgemm}}
 \end{table}
 
-
-
-\begin{figure}
+\begin{figure}[t]
   \centering
-  \fbox{\rule[-.5cm]{0cm}{4cm} \rule[-.5cm]{4cm}{0cm}}
-  \caption{Replace fbox with your graph.  X axis is for different dimension and Y for clock cycle}
+  \begin{tikzpicture}
+    \begin{axis}[
+        ymin=0, ymax=1000000000,
+        xmin=0, xmax=2100,
+        width=\linewidth,
+        height=0.35\linewidth,
+        xlabel={n},
+        ylabel={Clock cycles},
+        minor y tick num =3,
+        legend pos=south west
+      ]
+      \addplot +[dashed, mark=x] plot coordinates {
+          (100 , 1293899)
+          (200 , 5342085)
+          (500 , 24149098)
+          (1000 , 168575372)
+          (2000 , 934244972)
+        };
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Clocks change over matrix dimension change using \lstinline{dgemm}}
 \end{figure}
 
-
-\textbf{Running the Program}
-
-\begin{mdframed}
-  % TODO
-  Compilation: \lstinline$gcc -o output filename.c -flags$
-
-  Running: \lstinline$./output n$
-
-\end{mdframed}
-
-\textbf{Formula}
-
-\begin{mdframed}
-  $$\text{total\_seconds} = $$
-\end{mdframed}
-
-\textbf{Discussing the Results}
-
-\begin{mdframed}
-  \vspace{3em}
-
-\end{mdframed}
+\subsubsection{Discussion}
+The plot fits the trend of $O(n^3)$ as $n$ grows.
+Also we can see that the Gflops of \lstinline{dgemm} is greatly optimized to almost fit the hardware limit.
 
 \appendix
 
-\section{Makefile}
+\section{Source code and Makefile}
+
+You can find all the source in the folder \lstinline{./matrix}.
+Here we only attach the Makefile.
+
 \label{sec:makefile}
 \begin{lstlisting}
 SRC=src
 TARGET=target
+CC=gcc
 
 .PHONY: all
 
 all: mul mul_loop_O0 mul_loop_O2 mul_loop_O3 mul_BLAS
 
 mul: $(SRC)/mul.c
-  gcc $^ -o $(TARGET)/$@
+	${CC} $^ -o $(TARGET)/$@
 
 mul_loop_%: $(SRC)/mul_loop.c
-gcc $^ -$* -DOPT_LEVEL=\"-$*\" -o $(TARGET)/$@
+	${CC} $^ -$* -DOPT_LEVEL=\"-$*\" -o $(TARGET)/$@
 
-  mul_BLAS: $(SRC)/mul_BLAS.c
-gcc $^ -o $(TARGET)/$@ -lblas
+mul_BLAS: $(SRC)/mul_BLAS.c
+	${CC} $^ -o $(TARGET)/$@ -lblas
 
-  clean:
-  rm $(TARGET)/mul*
+clean: 
+	rm $(TARGET)/mul*
 \end{lstlisting}
 
 \end{document}
