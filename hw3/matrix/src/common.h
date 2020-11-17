@@ -12,9 +12,11 @@ typedef double Real;
 /* Intel(R) Xeon(R) Silver 4116 CPU @ 2.10GHz */
 /* Intel(R) Core(TM) i7-4790 CPU @ 3.60GHz */
 #define CPU_MAX_MHZ 3600
-#define GET_GFLOPS            \
-  usize clocks = end - begin; \
-  long double gflops = 2 * n * n * n * 1e-3 * CPU_MAX_MHZ / clocks;
+#define GET_GFLOPS                              \
+  usize clocks = end - begin;                   \
+  double gflo = 2 * n * n * n * 1e-9;           \
+  double seconds = clocks * 1e-6 / CPU_MAX_MHZ; \
+  double gflops = gflo / seconds;
 
 typedef struct {
   Real* ptr;
@@ -69,7 +71,7 @@ long long readTSC(void);
     matrix_display(a);                                 \
     GET_GFLOPS;                                        \
     INFO("%s Clocks passed: %ld\n", order, clocks);    \
-    INFO("%s Gflops: %Lf\n", order, gflops);           \
+    INFO("%s Gflops: %lf\n", order, gflops);           \
     MATRIX_DROP_ABC;                                   \
   }
 

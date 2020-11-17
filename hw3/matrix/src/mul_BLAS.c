@@ -36,7 +36,8 @@ int main(int argc, char **argv) {
 
   GET_GFLOPS;
   INFO("%s Clocks passed: %ld\n", "dgemm", clocks);
-  INFO("%s Gflops: %Lf\n", "dgemm", gflops);
+  INFO("%s Time passed: %lf\n", "dgemm", seconds);
+  INFO("%s Gflops: %lf\n", "dgemm", gflops);
 
   MATRIX_DROP_ABC;
   return 0;
