@@ -3,6 +3,6 @@ do
     for j in 1 2 3
     do
         echo "Running \`mul $i\` for the $j-th time"
-        ./target/mul $i
+        ./target/mul $i >/dev/null
     done
 done
