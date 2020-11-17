@@ -2,6 +2,13 @@
 #include "stdlib.h"
 #include "time.h"
 
+#define INFO(format, ...) fprintf(stderr, format, __VA_ARGS__);
+
+/* Intel(R) Xeon(R) Silver 4116 CPU @ 2.10GHz */
+#define CPU_MAX_MHZ 2101
+#define GET_GFLOPS            \
+  usize clocks = end - begin; \
+  long double gflops = 2 * n * n * n * 1e-3 * CPU_MAX_MHZ / clocks;
 typedef size_t usize;
 typedef double Real;
 
@@ -20,7 +27,6 @@ Matrix matrix_new(const usize n) {
   matrix.ptr = (Real*)malloc(sizeof(Real) * n * n);
   return matrix;
 }
-
 #define MATRIX_GET(m, i, j) (m.ptr + i * m.n + j)
 #define MATRIX_MUL(a, b, c) \
   *MATRIX_GET(a, i, j) += *MATRIX_GET(b, i, k) * *MATRIX_GET(c, k, j)
@@ -42,27 +48,29 @@ void matrix_display(const Matrix matrix) {
 
 void matrix_drop(Matrix matrix) { free(matrix.ptr); }
 
+#define MATRIX_NEW_ABC      \
+  Matrix a = matrix_new(n); \
+  Matrix b = matrix_new(n); \
+  Matrix c = matrix_new(n);
+#define MATRIX_DROP_ABC \
+  matrix_drop(a);       \
+  matrix_drop(b);       \
+  matrix_drop(c);
 long long readTSC(void);
-#define MATRIX_MUL_ORDER(Outter, Middle, Inner, order)               \
-  {                                                                  \
-    Matrix a = matrix_new(n);                                        \
-    Matrix b = matrix_new(n);                                        \
-    Matrix c = matrix_new(n);                                        \
-    srand(time(NULL));                                               \
-    matrix_rand(b);                                                  \
-    matrix_rand(c);                                                  \
-    usize begin = readTSC();                                         \
-    Outter Middle Inner { MATRIX_MUL(a, b, c); }                     \
-    usize end = readTSC();                                           \
-    matrix_display(a);                                               \
-    usize clocks = end - begin;                                      \
-    /* Intel(R) Xeon(R) Silver 4116 CPU @ 2.10GHz */                 \
-    double gflops = (2 * n * n * n * 1e-9) / (clocks * 1e-6 / 2101); \
-    fprintf(stderr, "%s Clocks passed: %ld\n", order, clocks);       \
-    fprintf(stderr, "%s Gflops: %lf\n", order, gflops);              \
-    matrix_drop(a);                                                  \
-    matrix_drop(b);                                                  \
-    matrix_drop(c);                                                  \
+#define MATRIX_MUL_ORDER(Outter, Middle, Inner, order) \
+  {                                                    \
+    MATRIX_NEW_ABC;                                    \
+    srand(time(NULL));                                 \
+    matrix_rand(b);                                    \
+    matrix_rand(c);                                    \
+    usize begin = readTSC();                           \
+    Outter Middle Inner { MATRIX_MUL(a, b, c); }       \
+    usize end = readTSC();                             \
+    matrix_display(a);                                 \
+    GET_GFLOPS;                                        \
+    INFO("%s Clocks passed: %ld\n", order, clocks);    \
+    INFO("%s Gflops: %Lf\n", order, gflops);           \
+    MATRIX_DROP_ABC;                                   \
   }
 
 /// Provided in HW2. Copy and pasted it here.

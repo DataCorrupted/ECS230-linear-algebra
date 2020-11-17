@@ -3,6 +3,8 @@
 #include "stdlib.h"
 
 /// See the documentation [here](http://www.netlib.org/clapack/cblas/dgemm.c)
+/// See example usage
+/// [here](https://www.ibm.com/support/knowledgecenter/SSLTBW_2.3.0/com.ibm.zos.v2r3.cbcpx01/atlasexample1.htm)
 int dgemm_(char *transa, char *transb, int *m, int *n, int *k, double *alpha,
            double *A, int *lda, double *B, int *ldb, double *beta, double *,
            int *ldc);
@@ -14,26 +16,28 @@ int main(int argc, char **argv) {
     fprintf(stderr, "Please specify matrix size n.");
     abort();
   }
-  int n = atoi(argv[1]);
+  usize n = atoi(argv[1]);
+  int N = n;
 
-  Matrix a = matrix_new(n);
-  Matrix b = matrix_new(n);
-  Matrix c = matrix_new(n);
+  MATRIX_NEW_ABC;
   srand(time(NULL));
+  matrix_rand(a);
   matrix_rand(b);
-  matrix_rand(c);
-  matrix_display(b);
-  matrix_display(c);
 
   char transa = 'N', transb = 'N';
   Real alpha = 1.0, beta = 0.0;
-  dgemm_(&transa, &transb, &n, &n, &n, &alpha, b.ptr, &n, c.ptr, &n, a.ptr,
-         &beta, &n);
+
+  usize begin = readTSC();
+  dgemm_(&transa, &transb, &N, &N, &N, &alpha, a.ptr, &N, b.ptr, &N, &beta,
+         c.ptr, &N);
+  usize end = readTSC();
+
   matrix_display(a);
 
-  matrix_drop(a);
-  matrix_drop(b);
-  matrix_drop(c);
+  GET_GFLOPS;
+  INFO("%s Clocks passed: %ld\n", "dgemm", clocks);
+  INFO("%s Gflops: %Lf\n", "dgemm", gflops);
 
+  MATRIX_DROP_ABC;
   return 0;
 }
