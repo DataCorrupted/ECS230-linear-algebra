@@ -1,0 +1,162 @@
+\documentclass{article}
+
+\title{ECS 230 App Num Linear Algebra \\ Homework 5}
+\author{Yuyang(Peter) Rong \\917781535 \\ PtrRong@ucdavis.edu}
+
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage[colorlinks,linkcolor=red]{hyperref}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{subfloat}
+\newtheorem{prop}{Proposition}
+\usepackage{ulem}
+\usepackage{listings}
+
+
+% For SI numerical display.
+\usepackage{siunitx}
+\sisetup{detect-all}
+% For table \*rules
+\usepackage{booktabs}
+% To fix table places.
+\usepackage{float}
+\restylefloat{table}
+
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+
+\begin{document}
+\maketitle
+
+\begin{description}
+
+
+
+	\item[Problem 1] For real square matrix $A$, is $\lambda$ is a eigenvalue of $A$, it is also an eigenvalue of $A^T$.
+
+	      \textbf{Solution}
+
+	      \begin{proof}
+		      \begin{align*}
+			      det(A - \lambda I)
+			       & = det((A - \lambda I)^T) & \text{Transpose matrix has the same determinant} & \\
+			       & = det(A^T - \lambda I)   & \text{$I^T = I$}                                 & \\
+			       & = 0                      & \text{$\lambda$ is $A$'s eigenvalue}
+		      \end{align*}
+		      Therefore $\lambda$ is also $A^T$'s eigenvalue.
+	      \end{proof}
+
+
+
+	\item[Problem 2] Coding.
+	      Write a C or C++ program that reads a column-stochastic link matrix and computes the eigenvector associated to the eigenvalue λ = 1 .
+	      The link matrix is specified by an input file with the format:
+	      \begin{lstlisting}
+			  n
+			  n1 i1 i2 ...
+			  n2 i1 i2 ...
+			  ...
+		  \end{lstlisting}
+
+	      $n$ describes the size of the matrix.
+	      $n_j$ describes the number of non-zero elements in column $j$, the value would be $1/n_j$.
+	      Following $n_j$ are $n_j$ number of indices.
+	      The program should use the power iteration to compute the dominant eigenvector.
+	      Iterations should stop when individual elements of the normalized eigenvector change by less than 1.0e-6.
+
+	      \textbf{Solution}
+
+	      Coding relies on \href{http://eigen.tuxfamily.org/}{eigen3}, but eigen3 source code is not included.
+	      You don't need to install eigen3, simply attach it's code side by side with mine would be fine.
+	      Eigen3 is listed as a submodule of this repo.
+	      You may want to \lstinline{git submodule update --init} before you can compile this code.
+
+
+
+	\item[Problem 3] Run code with Figure 1 in [1], verify its result.
+
+	      \textbf{Solution}
+
+	      Run code with the following command: \lstinline{printf "4\n3 1 2 3\n2 2 3\n1 0\n2 0 2"  | ./main}.
+	      The result we got is
+	      $$[0.387097, 0.129032, 0.290323, 0.193548]^T \approx \frac{[12, 4, 9, 6]^T}{||[12, 4, 9, 6]^T||_1} $$
+	      provided in the paper.
+
+
+
+	\item[Problem 4] Consider the strategy described in Exercise 1 of [1].
+	      Use the program to determine whether the strategy improves the score of node 3.
+	      Comment on your results.
+
+	      \textbf{Solution}
+
+	      Run code with the following command: \lstinline{printf "5\n3 1 2 3\n2 2 3\n2 0 4\n2 0 2\n1 2"  | ./main}.
+	      The result we got is
+	      $$[0.244898, 0.0816328, 0.367347, 0.122449, 0.183673]^T$$
+
+	      The strategy lowered the first pages importance and made page 3 with highest rank.
+
+
+	\item[Problem 5] Consider a network formed by a linear chain of length n in which each node has a link to its two nearest neighbors
+	      (except for nodes 1 and n, which only have one link to their only neighbor).
+	      Write the link matrix for $n=4$. Use the program to compute the eigenvector associated with the eigenvalue λ = 1 .
+	      The results depend on the initial vector used.
+	      Try the initial vectors $(1,1,1,1)$ and $(1,2,3,4)$.
+	      Why are the results different? Discuss your observations.
+
+	      \textbf{Solution}
+
+	      When using initial vector $[1, 1, 1, 1]^T$ we ended up with eigen vector
+	      $$[0.166667, 0.333333, 0.333333, 0.166667]^T$$
+	      in 20 iterations.
+	      But when using $[1,2,3,4]^T$ the calculation will not end.
+	      It will interleave between $[0.133333, 0.4, 0.266667, 0.2]^T$ and $[0.2, 0.266667, 0.4, 0.133333]^T$.
+
+	      \textbf{Discussion}
+	      Matrix we discussed here has the following form:
+	      \begin{equation*}
+		      A = \begin{bmatrix}
+			        & 1/2 &     &   \\
+			      1 &     & 1/2 &   \\
+			        & 1/2 &     & 1 \\
+			        &     & 1/2 &   \\
+		      \end{bmatrix}
+	      \end{equation*}
+
+	      Therefore, $det(A - \lambda I) = \lambda^4 - 5/4 \lambda^2 + 1/4$
+	      $A$ has eigen vector $\lambda_1 = 1, \lambda_2 = -1, \lambda_3 = 0.5, \lambda_4 = 0.5$.
+	      Thus we have $|\frac{\lambda_1}{\lambda_2}| = 1$, the algorithm won't convergence.
+
+
+
+	\item[Problem 6] Discuss how the problem observed in 5) may be solved using a shifted power method.
+	      How should the shift be chosen?
+	      Implement the shifted power method by modifying your program and compute the dominant eigenvector.
+	      Discuss your results.
+
+	      \textbf{Solution}
+
+	      Since we know $|\frac{\lambda_1}{\lambda_2}| = 1$, by shifting we can make sure that
+	      $$|\frac{\lambda_1 - \sigma}{\lambda_2 - \sigma}| \ne 1$$, therefore help the algorithm covergence.
+
+	      We need to make sure that $\frac{|\lambda_s - \sigma|}{|\lambda_t - \sigma|}$ are as small as possible.
+	      Since we know that $\lambda_1 = 1, \lambda_2 = -1, \lambda_3 = 0.5, \lambda_4 = 0.5$, shifting left or right is symmetric.
+	      Therefore we only consider shift right($\sigma > 0$).
+	      We have the following possibilities:
+
+	      \begin{itemize}
+		      \item $\sigma \in (0, 0.25]$, $\frac{|1 - \sigma|}{|-1 - \sigma|} = \frac{1 - \sigma}{1 + \sigma}$ decreases, take $\sigma = 0.25$ we have convergence rate 0.6.
+		      \item $\sigma \in [0.25, +\infty]$, $\frac{|-0.5 - \sigma|}{|-1 - \sigma|} = \frac{0.5+\sigma}{1 + \sigma}$ increases, approximates 1 at $\infty$, take $\sigma = 0.25$ we have convergence rate 0.6.
+	      \end{itemize}
+	      Therefore, we pick $\sigma = 0.25$ and got eigenvector $$[0.166667, 0.333333, 0.333333, 0.166667]^T$$ in two iterations.
+
+
+
+	\item[Problem 7] For situations such as 5),
+	      discuss the relative merits of the shifted power method applied to the link matrix and the power method discussed in Ref[1] using the matrix $S$.
+	      How would these methods compare (in terms of convergence rate) in the limit of large n for the linear chain.
+
+
+\end{description}
+
+\end{document}
+\grid
