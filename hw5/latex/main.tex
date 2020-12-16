@@ -155,7 +155,84 @@
 	      discuss the relative merits of the shifted power method applied to the link matrix and the power method discussed in Ref[1] using the matrix $S$.
 	      How would these methods compare (in terms of convergence rate) in the limit of large n for the linear chain.
 
+	      \textbf{Solution}
 
+	      Let's use notation as the following:
+	      $$T_n = det(\begin{bmatrix}
+			          & 1/2 &     &        &        &     &     &     \\
+			      1.0 &     & 1/2 &        &        &     &     &     \\
+			          & 1/2 &     & 1/2    &        &     &     &     \\
+			          &     & 1/2 & \cdots & \cdots &     &     &     \\
+			          &     &     & \cdots & \cdots & 1/2 &     &     \\
+			          &     &     &        & 1/2    &     & 1/2 &     \\
+			          &     &     &        &        & 1/2 &     & 1.0 \\
+			          &     &     &        &        &     & 1/2 &     \\
+		      \end{bmatrix} - \lambda I_n)$$
+	      $$S_n = det(\begin{bmatrix}
+			          & 1/2 &     &        &        &     &     &     \\
+			      1/2 &     & 1/2 &        &        &     &     &     \\
+			          & 1/2 &     & 1/2    &        &     &     &     \\
+			          &     & 1/2 & \cdots & \cdots &     &     &     \\
+			          &     &     & \cdots & \cdots & 1/2 &     &     \\
+			          &     &     &        & 1/2    &     & 1/2 &     \\
+			          &     &     &        &        & 1/2 &     & 1.0 \\
+			          &     &     &        &        &     & 1/2 &     \\
+		      \end{bmatrix} - \lambda I_n)$$
+	      It's not hard to find the following relations:
+	      $$S_1 = -\lambda, S_2 = \lambda^2 - 1/2, S_3 = -\lambda^3 + 3/4\lambda$$
+	      $$S_n = -\lambda S_{n-1} - 1/2 S_{n-2}$$
+	      $$T_n = -\lambda S_{n-1} - 1/4 S_{n-2}$$
+
+	      Let's consider $S_n = -\lambda S_{n-1} - 1/2 S_{n-2}$ first.
+	      It's safe to assume that $\exists \alpha_1, \alpha_2$, s.t. $S_n = \alpha_1x_1^n + \alpha_2x_2^n$ where $x_1, x_2$ is the solution to
+	      $$x^2 = -\lambda x - 1/4$$
+
+	      From this we can derive:
+
+	      \begin{align*}
+		      x         & = \frac{1}{2}(-\lambda \pm \sqrt{\lambda^2 - 1}) \\
+		      x_1x_2    & = 1/4                                            \\
+		      x_1 + x_2 & = -\lambda
+	      \end{align*}
+
+	      Using the following equations:
+
+	      \begin{align*}
+		      S_1 & = -\lambda                                  & = x_1 + x_2     & = \alpha_1 x_1 + \alpha_2 x_2     \\
+		      S_2 & = \lambda^2 - 1/2 = (x_1 + x_2)^2 - 2x_1x_2 & = x_1^2 + x_2^2 & = \alpha_1 x_1^2 + \alpha_2 x_2^2
+	      \end{align*}
+
+	      We find that $\alpha_1 = \alpha_2 = 1$
+
+	      $$S_n = x_1^n + x_2^n$$
+
+	      Since $\lambda \in [-1, 1]$, we denote $\lambda = \cos \theta$, then $x = \frac{1}{2} (-\cos \theta \pm i \sin \theta)$. Using De Moivre's formula we have:
+
+	      \begin{align*}
+		      S_n & = 2^{-n} (-\cos \theta + i \sin \theta)^n + 2^{-n} (-\cos \theta - i \sin \theta)^n         \\
+		          & = (-1)^n2^{-n}(\cos n\theta + i \sin n\theta + \cos n\theta - i \sin n\theta)               \\
+		          & = (-1)^n\frac{\cos n\theta}{2^{n-1}}                                                        \\
+		      T_n & = (-1)^{n}(\cos \theta \frac{\cos (n-1)\theta}{2^{n-2}} - \frac{\cos (n-2)\theta}{2^{n-1}}) \\
+		          & = \frac{(-1)^{n}}{2^{n-1}}(2 \cos \theta \cos (n-1)\theta - \cos ((n-1)\theta - \theta))    \\
+		          & = \frac{(-1)^{n}}{2^{n-1}}(\cos \theta \cos (n-1)\theta - \sin \theta \sin (n-1)\theta)     \\
+		          & = \frac{(-1)^{n}}{2^{n-1}} \cos n\theta
+	      \end{align*}
+
+	      Therefore, to make $T_n = 0$, we must have $\cos n\theta = 0 \Rightarrow \theta = (k - 0.5)\pi / n$
+	      Thus we have
+	      $$\lambda_k = \cos (k - 0.5)\pi / n$$
+
+	      Suppose we use notation $t = \cos \frac{\pi}{2n}$, now we can calculate the convergence rate for power method:
+
+	      \begin{align*}
+		      \lim_{n\rightarrow \infty}\frac{\lambda_1}{\lambda_2}
+		       & = \lim_{n\rightarrow \infty}\frac{\cos \frac{\pi}{2n}}{\cos \frac{3\pi}{2n}} \\
+		       & = \lim_{k\rightarrow 1}\frac{k}{4k^3 - 3k}                                   \\
+		       & = \lim_{k\rightarrow 1}\frac{1}{4k^2 - 3}                                    \\
+		       & = 1
+	      \end{align*}
+
+	      \textbf{Thus we can conclude that, when n goes to infty, the power method won't work or will take long time.}
 \end{description}
 
 \end{document}
